@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../store/state/app.state';
-import { applicantStartLogin } from '../../../store/applicant/applicant.action';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../store/state/app.state';
+import {applicantStartLogin} from '../../../store/applicant/applicant.action';
+import {BackendHttpService} from "../../../service/backend-http/backend-http.service";
 
 @Component({
   selector: 'jobSeeker-login',
@@ -13,9 +14,22 @@ export class JobSeekerLoginComponent implements OnInit {
   loginForm!: FormGroup;
   email_Error = '';
   password_Error = '';
+  url: string = '';
 
-  constructor(private builder: FormBuilder, private store: Store<AppState>) {}
+  constructor(
+    private builder: FormBuilder, private store: Store<AppState>,
+    private backendHttpService: BackendHttpService
+  ) {
+  }
+
   ngOnInit(): void {
+    //: get url from backend for the google Oauth2 login
+    this.backendHttpService.get("/auth/url").subscribe((response: any) => {
+      console.log(response.url)
+      this.url = response.url;
+    });
+
+
     this.loginForm = this.builder.group({
       email: this.builder.control(
         '',
@@ -41,7 +55,7 @@ export class JobSeekerLoginComponent implements OnInit {
     let email = this.loginForm.value.email;
     let password = this.loginForm.value.password;
     if (this.loginForm.valid) {
-      this.store.dispatch(applicantStartLogin({ email, password }));
+      this.store.dispatch(applicantStartLogin({email, password}));
     } else {
       if (this.loginForm?.get('email')?.hasError('required')) {
         this.email_Error = 'Email is required.';

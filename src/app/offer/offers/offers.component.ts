@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
-import { PageOffers } from '../../model/offer.model';
-import { Observable, catchError, throwError } from 'rxjs';
-import { OfferService } from '../../service/offer.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component} from '@angular/core';
+import {PageOffers} from '../../model/offer.model';
+import {Observable, catchError, throwError} from 'rxjs';
+import {OfferService} from '../../service/offer.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BackendHttpService} from "../../service/backend-http/backend-http.service";
 
 @Component({
   selector: 'offers',
@@ -22,18 +23,24 @@ export class OffersComponent {
   constructor(
     private service: OfferService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private backendHttpService: BackendHttpService
+  ) {
+  }
 
   ngOnInit(): void {
-    this.router.navigate([], {
-      queryParams: {
-        page: 1,
-      },
+    // this.router.navigate([], {
+    //   queryParams: {
+    //     page: 1,
+    //   },
+    // });
+
+    this.backendHttpService.getToken("code").subscribe((response: any) => {
+      console.log(response)
     });
-  
+
     this.route.queryParams.subscribe((params) => {
-      this.currentPage = params['page'] || 0;
+      this.currentPage = params['page'] || 1;
       this.size = params['size'] || 5;
       let queries = new Map<string, string>();
       for (let key in params) {
@@ -54,13 +61,13 @@ export class OffersComponent {
   }
 
   navigateToAdminCompetitions(page: any): void {
-    const queryParams = { page: page }; // Assuming this.page is your parameter value
-    this.router.navigate([], { queryParams: queryParams });
+    const queryParams = {page: page}; // Assuming this.page is your parameter value
+    this.router.navigate([], {queryParams: queryParams});
   }
 
   getTotalPagesArray(listOffers: PageOffers): number[] {
     return Array.from(
-      { length: listOffers.totalPages },
+      {length: listOffers.totalPages},
       (_, index) => index + 1
     );
   }
