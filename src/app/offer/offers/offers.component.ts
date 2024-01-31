@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {PageOffers} from '../../model/offer.model';
 import {Observable, catchError, throwError} from 'rxjs';
 import {OfferService} from '../../service/offer.service';
@@ -10,7 +10,7 @@ import {BackendHttpService} from "../../service/backend-http/backend-http.servic
   templateUrl: './offers.component.html',
   styleUrls: ['./offers.component.css'],
 })
-export class OffersComponent {
+export class OffersComponent implements OnInit {
   offers!: Observable<PageOffers>;
 
   errorMsg!: string;
@@ -24,7 +24,8 @@ export class OffersComponent {
     private service: OfferService,
     private route: ActivatedRoute,
     private router: Router,
-    private backendHttpService: BackendHttpService
+    private backendHttpService: BackendHttpService,
+    private http: BackendHttpService
   ) {
   }
 
@@ -34,10 +35,8 @@ export class OffersComponent {
     //     page: 1,
     //   },
     // });
-
-    this.backendHttpService.getToken("code").subscribe((response: any) => {
-      console.log(response)
-    });
+    console.log("OffersComponent")
+    this.loadTokenInformation();
 
     this.route.queryParams.subscribe((params) => {
       this.currentPage = params['page'] || 1;
@@ -48,6 +47,26 @@ export class OffersComponent {
       }
       this.getOffers(queries);
     });
+  }
+
+  loadTokenInformation() {
+    this.route.queryParams
+      .subscribe(params => {
+          if (params["code"] !== undefined) {
+            this.http.getToken(params["code"]).subscribe(result => {
+              if (result === true) {
+                console.log("result", result)
+                //: GET PRIVATE INFORMATION ... FROM THE BACKEND ..
+                this.backendHttpService.getPrivate("/private/message").subscribe((data: any) => {
+                  console.log(data)
+                });
+              } else {
+                console.log("result", result)
+              }
+            });
+          }
+        }
+      );
   }
 
   getOffers(queries: Map<string, string>) {
