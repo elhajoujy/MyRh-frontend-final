@@ -1,7 +1,7 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
 import {JobSeekerOfferInsightsResponse, Offer, PageOffers} from '../model/offer.model';
-import { Observable } from 'rxjs';
+import {Observable} from 'rxjs';
 import {environment} from "../../environments/environment";
 
 @Injectable({
@@ -9,11 +9,12 @@ import {environment} from "../../environments/environment";
 })
 export class OfferService {
   private base_url = 'http://localhost:8080/myrh/api/v1/offers';
-  private backend_host=  environment.backendHost;
+  private backend_host = environment.backendHost;
 
   constructor(
     private http: HttpClient
-  ) {}
+  ) {
+  }
 
   public save(offer: Offer) {
     const formData = new FormData();
@@ -34,6 +35,7 @@ export class OfferService {
     queries.forEach((value, key) => {
       params = params.append(key, value);
     });
+    //: SETUP THE AUTHORIZATION HEADER FROM THE TOKEN SERVICE HTTP INTERCEPTOR SO YOU CAN DO WHATEVER YOU WANT ....
     return this.http.get<PageOffers>(this.base_url, {
       params,
     });
@@ -44,10 +46,10 @@ export class OfferService {
   }
 
   changeVisibility(offerId: number, value: string) {
-    return this.http.patch(this.base_url + '/' + offerId + '/visibility/'+value,null);
+    return this.http.patch(this.base_url + '/' + offerId + '/visibility/' + value, null);
   }
 
-  getAllCandidatesOfferInsights(companyId: number):Observable<Array<JobSeekerOfferInsightsResponse>> {
-    return this.http.get<Array<JobSeekerOfferInsightsResponse>>(this.base_url + '/insights/jobSeeker/company/'+companyId);
+  getAllCandidatesOfferInsights(companyId: number): Observable<Array<JobSeekerOfferInsightsResponse>> {
+    return this.http.get<Array<JobSeekerOfferInsightsResponse>>(this.base_url + '/insights/jobSeeker/company/' + companyId);
   }
 }

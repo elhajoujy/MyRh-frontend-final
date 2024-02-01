@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
-import { PageOffers } from '../../model/offer.model';
-import { Observable, catchError, throwError } from 'rxjs';
-import { OfferService } from '../../service/offer.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {PageOffers} from '../../model/offer.model';
+import {Observable, catchError, throwError} from 'rxjs';
+import {OfferService} from '../../service/offer.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {BackendHttpService} from "../../service/backend-http/backend-http.service";
 
 @Component({
   selector: 'offers',
   templateUrl: './offers.component.html',
   styleUrls: ['./offers.component.css'],
 })
-export class OffersComponent {
+export class OffersComponent implements OnInit {
   offers!: Observable<PageOffers>;
 
   errorMsg!: string;
@@ -22,18 +23,23 @@ export class OffersComponent {
   constructor(
     private service: OfferService,
     private route: ActivatedRoute,
-    private router: Router
-  ) {}
+    private router: Router,
+    private backendHttpService: BackendHttpService,
+    private http: BackendHttpService
+  ) {
+  }
 
   ngOnInit(): void {
-    this.router.navigate([], {
-      queryParams: {
-        page: 1,
-      },
-    });
-  
+    // this.router.navigate([], {
+    //   queryParams: {
+    //     page: 1,
+    //   },
+    // });
+    console.log("OffersComponent")
+    this.loadTokenInformation();
+
     this.route.queryParams.subscribe((params) => {
-      this.currentPage = params['page'] || 0;
+      this.currentPage = params['page'] || 1;
       this.size = params['size'] || 5;
       let queries = new Map<string, string>();
       for (let key in params) {
@@ -41,6 +47,26 @@ export class OffersComponent {
       }
       this.getOffers(queries);
     });
+  }
+
+  loadTokenInformation() {
+    this.route.queryParams
+      .subscribe(params => {
+          if (params["code"] !== undefined) {
+            this.http.getToken(params["code"]).subscribe(result => {
+              if (result === true) {
+                console.log("result", result)
+                //: GET PRIVATE INFORMATION ... FROM THE BACKEND ..
+                this.backendHttpService.getPrivate("/private/message").subscribe((data: any) => {
+                  console.log(data)
+                });
+              } else {
+                console.log("result", result)
+              }
+            });
+          }
+        }
+      );
   }
 
   getOffers(queries: Map<string, string>) {
@@ -54,13 +80,13 @@ export class OffersComponent {
   }
 
   navigateToAdminCompetitions(page: any): void {
-    const queryParams = { page: page }; // Assuming this.page is your parameter value
-    this.router.navigate([], { queryParams: queryParams });
+    const queryParams = {page: page}; // Assuming this.page is your parameter value
+    this.router.navigate([], {queryParams: queryParams});
   }
 
   getTotalPagesArray(listOffers: PageOffers): number[] {
     return Array.from(
-      { length: listOffers.totalPages },
+      {length: listOffers.totalPages},
       (_, index) => index + 1
     );
   }
