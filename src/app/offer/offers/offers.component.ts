@@ -30,47 +30,42 @@ export class OffersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.router.navigate([], {
-    //   queryParams: {
-    //     page: 1,
-    //   },
-    // });
     console.log("OffersComponent")
     this.loadTokenInformation();
 
-    this.route.queryParams.subscribe((params) => {
-      this.currentPage = params['page'] || 1;
-      this.size = params['size'] || 5;
-      let queries = new Map<string, string>();
-      for (let key in params) {
-        queries.set(key, params[key]);
-      }
-      this.getOffers(queries);
-    });
   }
+
 
   loadTokenInformation() {
-    this.route.queryParams
-      .subscribe(params => {
-          if (params["code"] !== undefined) {
-            this.http.getToken(params["code"]).subscribe(result => {
-              if (result === true) {
-                console.log("result", result)
-                //: GET PRIVATE INFORMATION ... FROM THE BACKEND ..
-                this.backendHttpService.getPrivate("/private/message").subscribe((data: any) => {
-                  console.log(data)
-                });
-              } else {
-                console.log("result", result)
-              }
-            });
-          }
+    this.route.queryParams.subscribe(params => {
+        if (params["code"] !== undefined) {
+          this.http.getToken(params["code"]).subscribe(result => {
+            if (result) {
+              this.backendHttpService.getPrivate("/offers").subscribe((data: any) => {
+                this.getOffers();
+                //: SAVE TOKEN IN LOCAL STORAGE WE NEED IT FOR THE NEXT REQUESTS
+                localStorage.setItem("token", this.backendHttpService.token);
+                //: REDIRECT TO THE OFFERS PAGE
+
+                // this.router.navigate(["/applicant/dashboard"])
+              });
+            } else {
+              // console.log("result", result)
+              // console.log("redirect to login page")
+              // this.router.navigate(["/applicant/auth/login"])
+            }
+          });
+        } else {
+          console.log("redirect to login page")
+          this.router.navigate(["/applicant/auth/login"])
         }
-      );
+
+      }
+    );
   }
 
-  getOffers(queries: Map<string, string>) {
-    this.offers = this.service.getAll(queries).pipe(
+  getOffers() {
+    this.offers = this.service.getAll().pipe(
       catchError((err) => {
         console.error('Error in get All Offers : ', err);
         this.errorMsg = err.message;

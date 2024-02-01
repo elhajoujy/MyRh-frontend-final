@@ -3,6 +3,7 @@ import {Injectable} from '@angular/core';
 import {JobSeekerOfferInsightsResponse, Offer, PageOffers} from '../model/offer.model';
 import {Observable} from 'rxjs';
 import {environment} from "../../environments/environment";
+import {BackendHttpService} from "./backend-http/backend-http.service";
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,8 @@ export class OfferService {
   private backend_host = environment.backendHost;
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    private privateHttpBackend: BackendHttpService
   ) {
   }
 
@@ -35,10 +37,11 @@ export class OfferService {
     queries.forEach((value, key) => {
       params = params.append(key, value);
     });
+    return this.privateHttpBackend.getPrivate("/offers");
     //: SETUP THE AUTHORIZATION HEADER FROM THE TOKEN SERVICE HTTP INTERCEPTOR SO YOU CAN DO WHATEVER YOU WANT ....
-    return this.http.get<PageOffers>(this.base_url, {
-      params,
-    });
+    // return this.http.get<PageOffers>(this.base_url, {
+    //   params,
+    // });
   }
 
   public getOne(code: string): Observable<Offer> {
