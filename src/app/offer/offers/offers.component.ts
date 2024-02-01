@@ -43,9 +43,9 @@ export class OffersComponent implements OnInit {
             if (result) {
               this.backendHttpService.getPrivate("/offers").subscribe((data: any) => {
                 this.getOffers();
-                //TODO: SAVE TOKEN IN LOCAL STORAGE WE NEED IT FOR THE NEXT REQUESTS
+                //: SAVE TOKEN IN LOCAL STORAGE WE NEED IT FOR THE NEXT REQUESTS
                 localStorage.setItem("token", this.backendHttpService.token);
-                //TODO: REDIRECT TO THE OFFERS PAGE
+                //: REDIRECT TO THE OFFERS PAGE
 
                 // this.router.navigate(["/applicant/dashboard"])
               });
