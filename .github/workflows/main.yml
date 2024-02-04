@@ -15,8 +15,8 @@ jobs:
 
 
     steps:
-      - name: run the dockerFile on the local machine
-        run: docker build -t my-rh-frontend .
+#      - name: run the dockerFile on the local machine
+#        run: docker build -t my-rh-frontend .
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Setup Node.js
