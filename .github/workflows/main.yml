@@ -29,6 +29,6 @@ jobs:
           name: build
           path: build
       - name: show files
-        run: ls -l build
+        run: ls
 
 
