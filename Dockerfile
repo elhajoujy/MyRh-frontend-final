@@ -4,7 +4,7 @@ WORKDIR /app
 COPY . .
 RUN npm install
 RUN npm run build
-RUN ls
+RUN echo "Build completed"
 # Stage 2
 #FROM nginx:alpine
 #COPY --from=builder /app/dist/comp-lib /usr/share/nginx/html
