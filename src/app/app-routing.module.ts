@@ -25,6 +25,7 @@ import {AuthAdminGuard} from './core/guards/admin/auth-admin.guard';
 import {AuthCompanyGuard} from './core/guards/company/auth-company-guard.guard';
 import {ApplicantLayoutComponent} from './features/candidat/applicant-layout/applicant-layout.component';
 import {AuthApplicantGuard} from './core/guards/applicant/auth-applicant-guard.guard';
+import {GoogleAuthGuard} from "./core/guards/ouath2Google/google-auth.guard";
 
 const routes: Routes = [
   // default web layout  Applicant :
@@ -53,7 +54,10 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: JobSeekerDashboardComponent,
-        canActivate: [AuthApplicantGuard],
+        canActivate: [
+          // AuthApplicantGuard,
+          GoogleAuthGuard
+        ],
 
         children: [
           {path: '', redirectTo: 'jobApplicants', pathMatch: 'full'},
