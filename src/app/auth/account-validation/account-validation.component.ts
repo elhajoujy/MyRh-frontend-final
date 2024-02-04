@@ -1,11 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Observable, catchError, map, throwError } from 'rxjs';
-import { Store } from '@ngrx/store';
-import { ResponseHttp } from '../../model/responseData.model';
-import { Company } from '../../model/company.model';
-import { CompanyService } from '../../service/company.service';
-import { AppState } from '../../store/state/app.state';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Store} from '@ngrx/store';
+import {ResponseHttp} from '../../model/responseData.model';
+import {Company} from '../../model/company.model';
+import {CompanyService} from '../../service/company.service';
+import {AppState} from '../../store/state/app.state';
 
 @Component({
   selector: 'app-account-validation',
@@ -16,11 +15,13 @@ export class AccountValidationComponent implements OnInit {
   response!: ResponseHttp;
   status!: number | null | undefined;
   company!: Company | null;
+
   constructor(
     private route: ActivatedRoute,
     private companyService: CompanyService,
-    private store: Store<AppState>
-  ) {}
+    private store: Store<AppState>,
+  ) {
+  }
 
   ngOnInit(): void {
     this.companyService
