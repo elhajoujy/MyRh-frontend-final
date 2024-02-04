@@ -12,7 +12,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+
+
     steps:
+      - name: run the dockerFile on the local machine
+        run: docker build -t my-rh-frontend .
       - name: Checkout repository
         uses: actions/checkout@v2
       - name: Setup Node.js
