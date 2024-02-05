@@ -108,7 +108,6 @@ const routes: Routes = [
           },
         ],
       },
-
       {
         path: 'dashboard',
         canActivate: [AuthCompanyGuard],

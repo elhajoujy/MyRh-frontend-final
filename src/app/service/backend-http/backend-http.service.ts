@@ -42,6 +42,7 @@ export class BackendHttpService {
       .pipe(map((response: HttpResponse<Token>) => {
         if (response.status === 200 && response.body !== null) {
           this.token = response.body.token;
+          console.log(response);
           return true;
         } else {
           return false;
