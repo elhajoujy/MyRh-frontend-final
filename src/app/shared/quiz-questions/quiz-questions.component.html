@@ -1,0 +1,10 @@
+<div *ngIf="!listOfQuestions">
+  <div class="alert alert-warning" role="alert">
+    <strong>Warning!</strong> No questions found.
+  </div>
+</div>
+<div *ngIf="listOfQuestions">
+  <question
+    [question]="this.listOfQuestions.content[questionNumber]"
+  ></question>
+</div>

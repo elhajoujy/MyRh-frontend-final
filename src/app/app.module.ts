@@ -57,6 +57,11 @@ import {ApplicanSideBarComponent} from './features/candidat/applican-side-bar/ap
 import {MyApplicantsComponent} from './features/candidat/my-applicants/my-applicants.component';
 import {AuthAdminGuard} from './core/guards/admin/auth-admin.guard';
 import {AuthCompanyGuard} from './core/guards/company/auth-company-guard.guard';
+import {QuizComponent} from "./features/candidat/quiz/quiz.component";
+import { QuizQuestionsComponent } from './shared/quiz-questions/quiz-questions.component';
+import { QuestionComponent } from './shared/question/question.component';
+import { AnswerComponent } from './shared/answer/answer.component';
+
 
 const MODULES = [
   CommonModule,
@@ -124,11 +129,15 @@ const ADMIN_COMPONENT = [
     PaymentSuccessComponent,
     PaymentCancelComponent,
     SideBarComponent,
+    QuizComponent,
     ...COMPANY_COMPONENT,
     ...ADMIN_COMPONENT,
     ...APPLICANT_COMPONENT,
     ...LAYOUTS,
     ...OFFER_COMPONENT,
+    QuizQuestionsComponent,
+    QuestionComponent,
+    AnswerComponent,
   ],
   imports: [...MODULES],
   providers: [
