@@ -6,5 +6,17 @@
 <div *ngIf="listOfQuestions">
   <question
     [question]="this.listOfQuestions.content[questionNumber]"
+    (nextQuestion)="nextQuestion($event)"
   ></question>
+  <div *ngIf="showResult"
+       class="bg-green-500 p-4 rounded-md mt-4">
+    <div class="alert alert-success text-white" role="alert">
+      <strong>Success!</strong> You have completed the quiz.
+    </div>
+    <div class="flex justify-center">
+      <button class="btn btn-primary text-white" (click)="restartQuiz()">Restart Quiz
+      </button>
+    </div>
+  </div>
 </div>
+
