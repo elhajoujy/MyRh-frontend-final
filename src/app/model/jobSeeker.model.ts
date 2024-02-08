@@ -1,3 +1,5 @@
+import { profile } from "./profile.module";
+
 export interface JobSeeker {
   id: number;
   first_name: string;
@@ -6,6 +8,10 @@ export interface JobSeeker {
   password: string;
   image: string | null;
   enabled: boolean;
+  validated:boolean;
+  lastExamPassedDate:Date | null ;
+  PassedExams:number;
+  profile : number;
 }
 
 export interface PageJobSeeker {

@@ -49,6 +49,10 @@ export class JobSeekerService {
       password: jobSeekerRes.password,
       image: jobSeekerRes.image,
       enabled: jobSeekerRes.enabled,
+      validated: false,
+      PassedExams: 0,
+      profile: 0,
+      lastExamPassedDate: null
     };
     return jobSeeker;
   }
