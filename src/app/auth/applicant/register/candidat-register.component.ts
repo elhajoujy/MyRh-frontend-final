@@ -4,6 +4,8 @@ import { Store } from '@ngrx/store';
 import { AppState } from '../../../store/state/app.state';
 import { JobSeeker } from '../../../model/jobSeeker.model';
 import { applicantStartRegister } from '../../../store/applicant/applicant.action';
+import { profile } from '../../../model/profile.module';
+import {ProfileService} from '../../../service/profile/profile.service'
 
 @Component({
   selector: 'app-candidat-register',
@@ -11,13 +13,18 @@ import { applicantStartRegister } from '../../../store/applicant/applicant.actio
   styleUrls: ['./candidat-register.component.css'],
 })
 export class CandidatRegisterComponent {
-  constructor(private builder: FormBuilder, private store: Store<AppState>) {}
+  constructor(private builder: FormBuilder,
 
+     private store: Store<AppState>,
+
+     private profileService: ProfileService) {}
+  profiles: profile[] = [];
   signUpForm!: FormGroup;
   first_name_Error: any;
   last_name_Error: any;
   email_Error: any;
   password_Error: any;
+  profile_Error:any;
   confirm_pass_Error: any;
 
   ngOnInit(): void {
@@ -58,9 +65,16 @@ export class CandidatRegisterComponent {
           Validators.maxLength(20),
         ])
       ),
+      profile: ['', Validators.required],
     });
+    this.getAllProfiles();
   }
-
+  getAllProfiles(): void {
+    this.profileService.getAllProfiles()
+      .subscribe(profiles => {
+        this.profiles = profiles;
+      });
+  }
   onSubmit() {
     if (this.signUpForm.valid) {
       let jobSeeker: JobSeeker = {
@@ -71,6 +85,10 @@ export class CandidatRegisterComponent {
         password: this.signUpForm.value.password,
         image: null,
         enabled: true,
+        validated: false,
+        lastExamPassedDate: null,
+        PassedExams: 0,
+        profile: 0
       };
 
       if (this.signUpForm.value.confirmPassword === jobSeeker.password) {
@@ -140,6 +158,10 @@ export class CandidatRegisterComponent {
       } else {
         this.confirm_pass_Error = '';
       }
+      if (this.signUpForm?.get('profile')?.hasError('required')) {
+        this.profile_Error = 'profile is required.';
+      }
+
     }
   }
 }

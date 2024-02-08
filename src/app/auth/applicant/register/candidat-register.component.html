@@ -162,6 +162,31 @@
               </p>
             </div>
           </div>
+          <div class="space-y-2">
+            <label for="profile" class="pl-1 font-medium">Profile</label>
+            <select
+              id="profile"
+              name="profile"
+              formControlName="profile"
+              [ngClass]="{
+                'border border-red-600 ring-red-600 focus:ring-red-600 focus:border-red-400 ':
+                  profile_Error,
+                'border border-purple-600  focus:ring-purple-600 focus:border-purple-400':
+                  !profile_Error && signUpForm.get('profile')?.touched
+              }"
+              class="relative block w-full rounded-md border p-2.5 text-gray-900 ring-1 ring-outset ring-purple-600 placeholder:text-gray-400 focus:z-10 focus:ring-2 focus:ring-inset focus:ring-purple-600 sm:text-sm sm:leading-6"
+            >
+              <option value="" disabled selected>Select a profile</option>
+              <option *ngFor="let profile of profiles" [value]="profile.id">{{ profile.name }}</option>
+            </select>
+            <p
+              *ngIf="profile_Error"
+              id="profile_Error"
+              class="mt-1 text-xs text-red-500"
+            >
+              {{ profile_Error }}
+            </p>
+          </div>
         </div>
 
         <div>

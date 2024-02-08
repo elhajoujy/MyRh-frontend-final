@@ -94,6 +94,10 @@ export class OfferDetailComponent implements OnInit {
         password: '',
         enabled: false,
         image: '',
+        validated: false,
+        PassedExams: 0,
+        profile: 0,
+        lastExamPassedDate: null
       },
 
       resume: this.jobApplicantForm.value.resume,
