@@ -14,13 +14,14 @@ export class JobSeekerDashboardComponent implements OnInit {
   constructor(private store: Store<AppState>) {}
 
   ngOnInit(): void {
+
     this.store
       .select('applicantAuth')
       .subscribe(
         (state) => (
           (this.applicant = state.applicant),
-          (this.isLogged = state.isLogged),
-          console.log('Applicant : ', state.applicant)
+            (this.isLogged = state.isLogged),
+            console.log('Applicant : ', state.applicant)
         )
       );
     console.log('Applicant Side bar: ', this.applicant);

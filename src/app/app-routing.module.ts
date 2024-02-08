@@ -26,6 +26,7 @@ import {AuthCompanyGuard} from './core/guards/company/auth-company-guard.guard';
 import {ApplicantLayoutComponent} from './features/candidat/applicant-layout/applicant-layout.component';
 import {AuthApplicantGuard} from './core/guards/applicant/auth-applicant-guard.guard';
 import {GoogleAuthGuard} from "./core/guards/ouath2Google/google-auth.guard";
+import {QuizComponent} from "./features/candidat/quiz/quiz.component";
 
 const routes: Routes = [
   // default web layout  Applicant :
@@ -49,6 +50,10 @@ const routes: Routes = [
             component: JobSeekerLoginComponent,
           },
         ],
+      },
+      {
+        path: "quiz/:id",
+        component: QuizComponent
       },
 
       {

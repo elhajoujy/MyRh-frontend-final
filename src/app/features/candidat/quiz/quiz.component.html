@@ -1,0 +1,24 @@
+<app-applicant-layout>
+  <div content class="quiz-main grid w-full justify-center">
+    <div class="header">
+      <h3>
+        Take the quiz to test so you can be matched with the best job and get your profile Badge
+      </h3>
+      <!--    <timer *ngIf="isQuizToBeStarted"></timer>-->
+    </div>
+    <div class="quiz-questions" *ngIf="isQuizToBeStarted; else showThis">
+      <!--    <questions></questions>-->
+      <quiz-questions></quiz-questions>
+      this is when the quiz is started
+    </div>
+    <ng-template #showThis>
+      <div class="start m-auto">
+        <button
+          type="button"
+          class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+          (click)="onStart()">Start Quiz
+        </button>
+      </div>
+    </ng-template>
+  </div>
+</app-applicant-layout>
