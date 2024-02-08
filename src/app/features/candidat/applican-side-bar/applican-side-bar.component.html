@@ -19,18 +19,18 @@
               />
             </div>
 
-            <span class="font-medium text-black hover:text-purple-800">
-              {{ applicant?.first_name }} {{ applicant?.last_name }}
-            </span>
-            <!--            TODO: SHOW THE USER BADGE BASED ON HIS INFORMATION .... -->
-            <span *ngIf="applicant?.validated"
-                  class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-              Verified
-            </span>
-            <span *ngIf="!applicant?.validated"
-                  class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
-              Not Verified
-            </span>
+            <div class="font-medium text-black hover:text-purple-800">
+              <span>{{ applicant?.first_name }} {{ applicant?.last_name }}</span>
+              <!-- : SHOW THE USER BADGE BASED ON HIS INFORMATION .... -->
+              <div *ngIf="applicant?.validated"
+                   class="bg-blue-100 text-blue-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
+                Verified
+              </div>
+              <div *ngIf="!applicant?.validated"
+                   class="bg-red-100 text-red-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
+                Not Verified
+              </div>
+            </div>
 
 
           </div>
