@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {ProfileQuizService} from "../../service/profile-quiz/profile-quiz.service";
 import {PageQuestionResponse} from "../../model/profile-quiz-model";
 import {list} from "postcss";
+import { QuizJobSeekerService } from '../../service/jobSeeker/quiz-job-seeker/quiz-job-seeker.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'quiz-questions',
@@ -15,9 +17,10 @@ export class QuizQuestionsComponent implements OnInit {
   questionNumber: number = 0;
   answers: any[] = [];
   score: number = 0;
-  showResult: boolean = false;
+  showResult!: boolean;
+  validated!: boolean;
 
-  constructor(private ProfileQuizService: ProfileQuizService) {
+  constructor(private ProfileQuizService: ProfileQuizService,private quizJobSeekerService:QuizJobSeekerService) {
   }
 
   ngOnInit(): void {
@@ -33,19 +36,42 @@ export class QuizQuestionsComponent implements OnInit {
   }
 
   nextQuestion(event: any) {
-    //: implement the logic to go to the next question
-    if (this.questionNumber === this.listOfQuestions.content.length) {
-      //TODO: the user has finished the quiz WE MUST VERIFY THE ANSWERS AND SEND THEM TO THE BACKEND ALSO SHOW THE RESULT
+    this.answers.push(event);
+
+    if (this.questionNumber === this.listOfQuestions.content.length-1) {
       this.countScore();
       this.showFinalQuizResult();
     }
+
     this.questionNumber++;
-    this.answers.push(event);
   }
 
   showFinalQuizResult() {
-    this.showResult = true;
-    console.log(this.answers)
+    //todo:get jobsekeer from  the token
+    const jobseekerlogged=1;
+    const currentDate: Date = new Date();
+    const formattedDate = this.formatDateToString(currentDate);
+
+    const percentageofsucces:number=(this.score / this.listOfQuestions.content.length) * 100;
+
+    if(this.score >= 70){
+       this.showResult = true;
+       this.validated = true;
+      }else{
+      this.showResult = false;
+      this.validated = true;
+    }
+
+    this.quizJobSeekerService.sendQuizResult(jobseekerlogged, formattedDate, this.validated)
+    .subscribe(
+      (response) => {
+        console.log("Quiz result sent to backend successfully", response);
+      },
+      (error) => {
+        console.error("Error sending quiz result to backend", error);
+        // Handle error if needed
+      }
+    );
   }
 
 
@@ -55,7 +81,16 @@ export class QuizQuestionsComponent implements OnInit {
   }
 
   private countScore() {
-    //todo: implement the logic to count the score
-    console.log(this.answers)
+    this.answers.forEach(answer => {
+      console.log(answer)
+      if (answer.iscorrect === true) {
+        this.score++;
+      }
+    });
+       console.log(this.score)
+
+  }
+  formatDateToString(date: Date): string {
+    return formatDate(date, 'yyyy-MM-dd', 'en-US');
   }
 }

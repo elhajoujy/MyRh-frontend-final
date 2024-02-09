@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Question} from "../../model/profile-quiz-model";
+import {Answer, Question} from "../../model/profile-quiz-model";
 
 @Component({
   selector: 'question',
@@ -9,7 +9,7 @@ import {Question} from "../../model/profile-quiz-model";
 export class QuestionComponent implements OnInit {
   @Input() question: Question | undefined;
   @Output() nextQuestion = new EventEmitter<any>();
-  selectedAnswer: any;
+  selectedAnswer!: Answer;
 
 
   ngOnInit() {
@@ -20,11 +20,11 @@ export class QuestionComponent implements OnInit {
   onNextClick() {
     console.log("next question" + this.question?.id)
     console.log("call the parent to change the question but first send you answer")
-    this.nextQuestion.emit({questionId: this.question?.id, answer: this.selectedAnswer});
+    this.nextQuestion.emit({questionId: this.question?.id, answer: this.selectedAnswer.id,iscorrect:this.selectedAnswer.correct});
   }
 
-  onAnswerChange(value: any) {
-    console.log(value.value)
-    this.selectedAnswer = value.value;
+  onAnswerChange(answer: Answer ) {
+    console.log(answer)
+    this.selectedAnswer = answer;
   }
 }
