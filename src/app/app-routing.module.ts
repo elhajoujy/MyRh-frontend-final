@@ -60,8 +60,8 @@ const routes: Routes = [
         path: 'dashboard',
         component: JobSeekerDashboardComponent,
         canActivate: [
-          // AuthApplicantGuard,
-          GoogleAuthGuard
+          AuthApplicantGuard,
+          // GoogleAuthGuard
         ],
 
         children: [
