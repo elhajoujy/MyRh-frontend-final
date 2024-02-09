@@ -10,7 +10,7 @@ import {PageQuestionResponse} from "../../model/profile-quiz-model";
 })
 export class ProfileQuizService {
 
-  private baseUrl = environment.backendHost + "/api/v1/profiles";
+  private baseUrl = environment.backendHost + "/api/v1/public/profiles";
 
   constructor(
     private http: HttpClient
