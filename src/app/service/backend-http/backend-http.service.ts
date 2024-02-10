@@ -1,4 +1,4 @@
-import {HttpClient, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams, HttpResponse} from '@angular/common/http';
 import {Injectable} from '@angular/core';
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";
@@ -25,15 +25,26 @@ export class BackendHttpService {
 
   getPrivate(endpoint: string, queries: Map<string, string> = new Map()): Observable<any> {
     console.log(this.token)
-    return this.http.get(this.url + endpoint, {
-      headers: new HttpHeaders(
-        {"Authorization": "Bearer " + this.token},
-      )
+    console.log(queries)
+    let paramters = new HttpParams();
+    queries.forEach((value, key) => {
+      paramters = paramters.append(key, value);
     });
+
+    return this.http.get(this.url + endpoint,
+      {
+        headers: new HttpHeaders(
+          {"Authorization": "Bearer " + this.token},
+        ),
+        params: paramters,
+
+      }
+    );
+
 
   }
 
-  getPublic(endpoint: string): any {
+  getPublic(endpoint: string, queries: Map<string, string>): any {
     return this.http.get(this.url + endpoint);
   }
 

@@ -1,4 +1,3 @@
-
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Store} from '@ngrx/store';
@@ -7,7 +6,7 @@ import {OfferService} from 'src/app/service/offer.service';
 
 import {CompanySubscriptionServiceService} from "../../service/company/company-subscription-service.service";
 import {ToastService} from "angular-toastify";
-import { HttpClient } from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {environment} from "../../../environments/environment";
 import {loadStripe} from "@stripe/stripe-js/pure";
 
@@ -22,7 +21,7 @@ import {AppState} from "../../store/state/app.state";
 export class OfferFormComponent implements OnInit {
   offerForm!: FormGroup;
   showModal: boolean = false;
-  companyAuth:any;
+  companyAuth: any;
   stripePromise = loadStripe(environment.stripe);
   baseUrl = 'http://localhost:8080/myrh/api/v1/company/subscriptions/payment';
 
@@ -30,7 +29,7 @@ export class OfferFormComponent implements OnInit {
     private builder: FormBuilder,
     private offerService: OfferService,
     private store: Store<AppState>,
-    private companySubscriptionServiceService:CompanySubscriptionServiceService,
+    private companySubscriptionServiceService: CompanySubscriptionServiceService,
     private _toastService: ToastService,
     private http: HttpClient
   ) {
@@ -93,7 +92,7 @@ export class OfferFormComponent implements OnInit {
       profile: {
         id: this.offerForm.value.domaine,
       },
-
+      offerProfile: null,
       city: {
         id: this.offerForm.value.city,
       },
@@ -126,7 +125,7 @@ export class OfferFormComponent implements OnInit {
     this.showModal = !this.showModal;
   }
 
-  async handleNewSubscription(subscription: string) : Promise<void>{
+  async handleNewSubscription(subscription: string): Promise<void> {
 
 
     let amount = 0;
@@ -149,7 +148,7 @@ export class OfferFormComponent implements OnInit {
       // amount on cents *10 => to be on dollar
       amount: amount,
       quantity: '1',
-      successUrl: 'http://localhost:4200/payment/success?subscriptionStatus='+subscription+'&id='+1,
+      successUrl: 'http://localhost:4200/payment/success?subscriptionStatus=' + subscription + '&id=' + 1,
       cancelUrl: 'http://localhost:4200/payment/cancel'
     };
 
@@ -159,10 +158,10 @@ export class OfferFormComponent implements OnInit {
     // this is a normal http calls for a backend api
     this.http
       .post(this.baseUrl, payment).subscribe((data: any) => {
-        stripe!.redirectToCheckout({
-          sessionId: data.id,
-        });
+      stripe!.redirectToCheckout({
+        sessionId: data.id,
       });
+    });
 
   }
 }
