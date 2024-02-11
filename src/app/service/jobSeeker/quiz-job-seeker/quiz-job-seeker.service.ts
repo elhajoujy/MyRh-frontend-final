@@ -7,9 +7,9 @@ import { Injectable } from '@angular/core';
 export class QuizJobSeekerService {
 
   constructor(private http: HttpClient) { }
+   endpoint= "http://localhost:8080/myrh/api/v1/jobSeekers"
 
   sendQuizResult(jobseekerId: number, currentDate: String, validated: boolean) {
-    const endpoint = 'http://localhost:8080/myrh/api/v1/jobSeekers/results';
 
     let quizResultData = {
       jobseekerId: jobseekerId,
@@ -17,5 +17,11 @@ export class QuizJobSeekerService {
       isvalidated: validated,
     };
     console.log(quizResultData)
-    return this.http.post(endpoint, quizResultData);
-  }}
+    return this.http.post(this.endpoint+"/results", quizResultData);
+  }
+
+  countAttemptsToZero(jobseekerId: number) {
+
+    return this.http.get(`${this.endpoint}/${jobseekerId}/resetAttempts`);
+  }
+}
