@@ -20,7 +20,7 @@ export class QuizQuestionsComponent implements OnInit {
   score: number = 0;
   showResult!: boolean;
   validated!: boolean;
-  JobSeekerLogged:JobSeeker ;
+  JobSeekerLogged!:JobSeeker;
 
   constructor(private ProfileQuizService: ProfileQuizService,private quizJobSeekerService:QuizJobSeekerService) {
   }
