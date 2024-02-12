@@ -1,3 +1,5 @@
+import {Profile} from "./jobSeeker.model";
+
 export interface Offer {
   id: number;
   title: string;
@@ -8,6 +10,7 @@ export interface Offer {
   level: any;
   status: any;
   salary: number;
+  offerProfile: Profile | null;
 }
 
 export interface PageOffers {
@@ -42,10 +45,10 @@ export interface JobSeekerOfferInsightsResponse {
 }
 
 export enum UserStatus {
-  ONLINE= 'ONLINE',
-  OFFLINE= 'OFFLINE',
-  BUSY= 'BUSY',
-  ALL= 'ALL'
+  ONLINE = 'ONLINE',
+  OFFLINE = 'OFFLINE',
+  BUSY = 'BUSY',
+  ALL = 'ALL'
 }
 
 

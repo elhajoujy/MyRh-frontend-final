@@ -4,6 +4,9 @@ import {Observable, catchError, throwError} from 'rxjs';
 import {OfferService} from '../../service/offer.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {BackendHttpService} from "../../service/backend-http/backend-http.service";
+import {Store} from "@ngrx/store";
+import {AppState} from "../../store/state/app.state";
+import {JobSeeker} from "../../model/jobSeeker.model";
 
 @Component({
   selector: 'offers',
@@ -12,6 +15,7 @@ import {BackendHttpService} from "../../service/backend-http/backend-http.servic
 })
 export class OffersComponent implements OnInit {
   offers!: Observable<PageOffers>;
+  applicant!: JobSeeker | null;
 
   errorMsg!: string;
   currentPage!: number;
@@ -25,14 +29,28 @@ export class OffersComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private backendHttpService: BackendHttpService,
-    private http: BackendHttpService
+    private http: BackendHttpService,
+    private store: Store<AppState>,
   ) {
   }
 
   ngOnInit(): void {
-    console.log("OffersComponent")
-    this.loadTokenInformation();
+    //TODO: LOADING O2AUTH2 TOKEN INFORMATION
 
+    // this.loadTokenInformation();
+    let params = new Map<string, string>();
+    this.loadApplicantAuth();
+    //TODO : afficher sur la dashboard du candidat seulement les offres d'emploi qui correspondent son profil validé,
+    // si non le candidat recoit toutes les offres
+
+    if (this.applicant && this.applicant.validated) {
+      console.log('params :', this.applicant.profile.id);
+      params.set("profile_id", this.applicant.profile.id.toString());
+      console.log('params :', params);
+      this.getOffers(params);
+    } else {
+      this.getOffers(params);
+    }
   }
 
 
@@ -41,8 +59,10 @@ export class OffersComponent implements OnInit {
         if (params["code"] !== undefined) {
           this.http.getToken(params["code"]).subscribe(result => {
             if (result) {
+                let params = new Map<string, string>();
               this.backendHttpService.getPrivate("/offers").subscribe((data: any) => {
-                this.getOffers();
+                //todo: get offers based on the user profile
+                // this.getOffers(params);
                 //: SAVE TOKEN IN LOCAL STORAGE WE NEED IT FOR THE NEXT REQUESTS
                 localStorage.setItem("token", this.backendHttpService.token);
                 //: REDIRECT TO THE OFFERS PAGE
@@ -64,8 +84,8 @@ export class OffersComponent implements OnInit {
     );
   }
 
-  getOffers() {
-    this.offers = this.service.getAll().pipe(
+  getOffers(params: Map<string, string>) {
+    this.offers = this.service.getAll(params).pipe(
       catchError((err) => {
         console.error('Error in get All Offers : ', err);
         this.errorMsg = err.message;
@@ -88,5 +108,21 @@ export class OffersComponent implements OnInit {
 
   goToPage(page: number): void {
     this.currentPage = page;
+  }
+
+  private loadApplicantAuth() {
+    console.log('loadApplicantAuth')
+    this.store.select('applicantAuth').subscribe(
+      (state) => (
+        (this.applicant = state.applicant),
+          // console.log('State :', state),
+          console.log(
+            'isLogged  : ',
+            state.isLogged,
+            ', Applicant :',
+            this.applicant
+          )
+      )
+    );
   }
 }

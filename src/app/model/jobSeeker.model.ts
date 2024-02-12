@@ -1,4 +1,4 @@
-import { profile } from "./profile.module";
+import {profile} from "./profile.module";
 
 export interface JobSeeker {
   id: number;
@@ -8,10 +8,17 @@ export interface JobSeeker {
   password: string;
   image: string | null;
   enabled: boolean;
-  validated:boolean;
-  lastExamPassedDate:Date | null ;
-  PassedExams:number;
-  profile : number;
+  validated: boolean;
+  lastExamPassedDate: Date | null;
+  PassedExams: number;
+  profile: Profile | any | null;
+}
+
+export interface Profile {
+  id: number | null;
+  name: string;
+  description: string;
+  image: string;
 }
 
 export interface PageJobSeeker {

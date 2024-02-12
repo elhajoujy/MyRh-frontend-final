@@ -1,10 +1,10 @@
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import {Actions, createEffect, ofType} from '@ngrx/effects';
 
-import { exhaustMap, map } from 'rxjs';
-import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
+import {exhaustMap, map} from 'rxjs';
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
 
-import { JobSeekerService } from '../../job-seeker.service';
+import {JobSeekerService} from '../../job-seeker.service';
 import {
   applicantLoginSuccess, applicantLogOut,
   applicantRegisterSuccess,
@@ -18,7 +18,8 @@ export class ApplicantEffect {
     private actions$: Actions,
     private jobSeekerService: JobSeekerService,
     private route: Router
-  ) {}
+  ) {
+  }
 
   login$ = createEffect(() =>
     this.actions$.pipe(
@@ -28,6 +29,7 @@ export class ApplicantEffect {
           map((data) => {
             console.log('data :', data);
             const jobSeeker = this.jobSeekerService.jobSeekerMapper(data);
+            console.log('jobSeeker :', jobSeeker);
             this.route.navigate(['/applicant/dashboard']);
             return applicantLoginSuccess({
               jobSeeker: jobSeeker,

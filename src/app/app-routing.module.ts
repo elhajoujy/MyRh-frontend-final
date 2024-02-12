@@ -65,7 +65,7 @@ const routes: Routes = [
         ],
 
         children: [
-          {path: '', redirectTo: 'jobApplicants', pathMatch: 'full'},
+          // {path: '', redirectTo: 'jobApplicants', pathMatch: 'full'},
 
           {
             path: 'jobApplicants',
