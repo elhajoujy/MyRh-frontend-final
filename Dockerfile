@@ -1,25 +1,23 @@
-# Fetch node image
-FROM node:20.11.0-alpine
+# Use an official Node.js runtime as a parent image
+FROM node:18-alpine
 
-# Set the working directory (Inside the container)
+# Set the working directory to /app
 WORKDIR /app
 
-# Copy the package.json and package-lock.json to the container
+# Copy package.json and package-lock.json to /app
 COPY package*.json ./
 
-# Build angular application
+# Install app dependencies
 RUN npm install
 
-# Copy the source code to the container
+# Copy app source code to /app
 COPY . .
 
-RUN npm run build
+# Build the app for production
+RUN npm run build --prod
 
-# Expose the port 4200
-EXPOSE 4200
+# Expose port 80 for the container
+EXPOSE 80
 
-# Start the application
+# Start the app
 CMD ["npm", "start"]
-
-#docker build -t elhjoujy/angular-app .
-#docker run -d -it -p 80:80/tcp --name angular-app elhjoujy/angular-app:latest
