@@ -1,0 +1,40 @@
+name: CICD my rh build deployement to ec2
+
+on:
+  push:
+    branches: [ deploy-frontend-to-ec2 ]
+
+
+jobs:
+  build:
+    runs-on: [ ubuntu-latest ]
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      - name: Build Project
+        run: npm install
+      - name: Build Project
+        run: npm run build
+      - name: Login to docker hub
+        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+      - name: Build docker image
+        run: |
+          echo "docker_username=${{secrets.DOCKER_USERNAME}}" >> $GITHUB_ENV
+          docker build -t elhjoujy/my-rh-frontend-v1 .
+      - name: Publish image to docker hub
+        run: docker push elhjoujy/my-rh-frontend-v1:latest
+
+#  deploy:
+#    needs: build
+#    runs-on: [ aws-ec2 ]
+#    steps:
+#      - name: Pull Image from docker hub
+#        run: sudo docker pull elhjoujy/my-rh-frontend-v1:latest
+#      - name: Delete old container
+#        run: sudo docker rm -f my-rh-frontend-container
+#      - name: Run docker container
+#        run: sudo docker  run -d -p 80:80 --name my-rh-frontend-container elhjoujy/my-rh-frontend-v1
