@@ -37,4 +37,6 @@ jobs:
       - name: Delete old container
         run: sudo docker rm -f my-rh-frontend-container
       - name: Run docker container
-        run: sudo docker  run -d -p 4200:4200 --name my-rh-frontend-container elhjoujy/my-rh-frontend-v1
+        run: sudo run -d -it -p 4200:4200/tcp --name my-rh-frontend-container elhjoujy/my-rh-frontend-v1
+
+#  docker run -d -it -p 4200:4200/tcp --name angular-app elhjoujy/angular-app:latest
