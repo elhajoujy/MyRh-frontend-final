@@ -1,15 +1,18 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Company, PageCompany } from '../model/company.model';
-import { Observable } from 'rxjs';
-import { ResponseHttp } from '../model/responseData.model';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Company, PageCompany} from '../model/company.model';
+import {Observable} from 'rxjs';
+import {ResponseHttp} from '../model/responseData.model';
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
 })
 export class CompanyService {
-  private base_url = 'http://localhost:8080/myrh/api/v1/companies';
-  constructor(private http: HttpClient) {}
+  private base_url = `${environment.backendHost}/myrh/api/v1/companies`;
+
+  constructor(private http: HttpClient) {
+  }
 
   public getAll(page: number, size: number): Observable<PageCompany> {
     const params = new HttpParams()
@@ -28,6 +31,7 @@ export class CompanyService {
   public save(company: Company) {
     return this.http.post<Company>(this.base_url, company);
   }
+
   public confirmAccount(token: string): Observable<ResponseHttp> {
     const params = new HttpParams().set('token', token.toString());
 
@@ -35,6 +39,7 @@ export class CompanyService {
       params,
     });
   }
+
   public auth(email: string, password: string): Observable<ResponseHttp> {
     return this.http.post<ResponseHttp>(this.base_url + '/auth', {
       email,

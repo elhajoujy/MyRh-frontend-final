@@ -1,18 +1,19 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { environment } from '../environments/environment';
-import { ResponseHttp } from './model/responseData.model';
-import { JobSeeker, PageJobSeeker } from './model/jobSeeker.model';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
+import {environment} from '../environments/environment';
+import {ResponseHttp} from './model/responseData.model';
+import {JobSeeker, PageJobSeeker} from './model/jobSeeker.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class JobSeekerService {
-  private base_url = 'http://localhost:8080/myrh/api/v1/jobSeekers';
-  private backend_host = environment.backendHost;
 
-  constructor(private http: HttpClient) {}
+  private base_url = `${environment.backendHost}/myrh/api/v1/jobSeekers`;
+
+  constructor(private http: HttpClient) {
+  }
 
   public getAll(page: number, size: number): Observable<PageJobSeeker> {
     const params = new HttpParams()

@@ -1,20 +1,22 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import {HttpClient, HttpParams} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {Observable} from 'rxjs';
 import {
   CompanyJobApplicantReq,
   JobApplicant,
   JobApplicantRequsest,
   PageJobApplicant,
 } from '../model/jobApplicant.model';
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
 })
 export class JobApplicantService {
-  private base_url = 'http://localhost:8080/myrh/api/v1/jobApplicants';
+  private base_url = `${environment.backendHost}/myrh/api/v1/jobApplicants`;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+  }
 
   public save(jobApplicant: JobApplicantRequsest) {
     const formData = new FormData();
@@ -45,6 +47,7 @@ export class JobApplicantService {
       companyJobApplicantReq
     );
   }
+
   public getAll(page: number, size: number): Observable<PageJobApplicant> {
     const params = new HttpParams()
       .set('page', page.toString())
@@ -54,6 +57,7 @@ export class JobApplicantService {
       params,
     });
   }
+
   public getAllByCompany(companyId: number): Observable<Array<JobApplicant>> {
     return this.http.get<Array<JobApplicant>>(
       this.base_url + '/companies/' + companyId
