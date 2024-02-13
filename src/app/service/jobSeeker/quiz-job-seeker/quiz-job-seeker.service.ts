@@ -1,5 +1,5 @@
-import {HttpClient} from '@angular/common/http';
-import {Injectable} from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 import {environment} from "../../../../environments/environment";
 
 @Injectable({
@@ -7,12 +7,10 @@ import {environment} from "../../../../environments/environment";
 })
 export class QuizJobSeekerService {
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) { }
+   endpoint= `${environment.backendHost}/myrh/api/v1/jobSeekers`
 
   sendQuizResult(jobseekerId: number, currentDate: String, validated: boolean) {
-    // http://localhost:8080/
-    const endpoint = `${environment.backendHost}/myrh/api/v1/jobSeekers/results`;
 
     let quizResultData = {
       jobseekerId: jobseekerId,
@@ -20,6 +18,11 @@ export class QuizJobSeekerService {
       isvalidated: validated,
     };
     console.log(quizResultData)
-    return this.http.post(endpoint, quizResultData);
+    return this.http.post(this.endpoint+"/results", quizResultData);
+  }
+
+  countAttemptsToZero(jobseekerId: number) {
+
+    return this.http.get(`${this.endpoint}/${jobseekerId}/resetAttempts`);
   }
 }

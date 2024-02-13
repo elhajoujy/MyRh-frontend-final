@@ -4,6 +4,7 @@ import {PageQuestionResponse} from "../../model/profile-quiz-model";
 import {list} from "postcss";
 import { QuizJobSeekerService } from '../../service/jobSeeker/quiz-job-seeker/quiz-job-seeker.service';
 import { formatDate } from '@angular/common';
+import { JobSeeker } from '../../model/jobSeeker.model';
 
 @Component({
   selector: 'quiz-questions',
@@ -19,20 +20,25 @@ export class QuizQuestionsComponent implements OnInit {
   score: number = 0;
   showResult!: boolean;
   validated!: boolean;
+  JobSeekerLogged!:JobSeeker;
 
   constructor(private ProfileQuizService: ProfileQuizService,private quizJobSeekerService:QuizJobSeekerService) {
   }
 
   ngOnInit(): void {
+    this.loadQuestions();
+
+  }
+  loadQuestions(): void {
     this.ProfileQuizService.getQuizzesReleatedToProfile(1, new Map()).subscribe(
       (data) => {
         this.listOfQuestions = data;
-        console.log(this.listOfQuestions)
+        console.log(this.listOfQuestions);
       },
       (error) => {
         console.log(error);
       }
-    )
+    );
   }
 
   nextQuestion(event: any) {
@@ -76,9 +82,28 @@ export class QuizQuestionsComponent implements OnInit {
 
 
   restartQuiz() {
-    // todo the user want to restart the quiz ( he only has 3 try every month ) check that before he restart the quiz
-    console.log("restart the quiz")
-  }
+
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() ;
+
+    //const attemptDate = this.JobSeekerLogged.lastExamPassedDate.getMonth() ;
+    const attemptDate = 3
+        if (this.JobSeekerLogged.PassedExams == 3 && attemptDate == currentMonth) {
+          console.log("You have already attempted 3 exams this month.");
+
+        }  if (this.JobSeekerLogged.PassedExams == 3 && attemptDate != currentMonth) {
+             this.quizJobSeekerService.countAttemptsToZero(this.JobSeekerLogged.id);
+          console.log("You can restart the quiz");
+          this.loadQuestions();
+
+
+         } else {
+          console.log("You can restart the quiz.");
+          this.loadQuestions();
+
+        }
+      };
+
 
   private countScore() {
     this.answers.forEach(answer => {

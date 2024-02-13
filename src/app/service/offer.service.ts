@@ -32,12 +32,13 @@ export class OfferService {
     });
   }
 
-  public getAll(queries: Map<string, string> = new Map()): Observable<PageOffers> {
-    let params = new HttpParams();
-    queries.forEach((value, key) => {
-      params = params.append(key, value);
-    });
-    return this.privateHttpBackend.getPrivate("/offers");
+  public getAll(queries: Map<string, string>): Observable<PageOffers> {
+    // let params = new HttpParams();
+    // queries.forEach((value, key) => {
+    //   params = params.append(key, value);
+    // });
+    return this.privateHttpBackend.getPrivate("/offers", queries);
+    // return this.privateHttpBackend.getPublic("/offers", queries);
     //: SETUP THE AUTHORIZATION HEADER FROM THE TOKEN SERVICE HTTP INTERCEPTOR SO YOU CAN DO WHATEVER YOU WANT ....
     // return this.http.get<PageOffers>(this.base_url, {
     //   params,

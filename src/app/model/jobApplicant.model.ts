@@ -1,5 +1,5 @@
-import { JobSeeker } from './jobSeeker.model';
-import { Offer } from './offer.model';
+import {JobSeeker} from './jobSeeker.model';
+import {Offer} from './offer.model';
 
 export interface JobApplicant {
   JobApplicantId: JobApplicantId;

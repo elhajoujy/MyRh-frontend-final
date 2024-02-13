@@ -23,11 +23,12 @@ export class JobSeekerLoginComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    //: get url from backend for the google Oauth2 login
-    this.backendHttpService.get("/auth/url").subscribe((response: any) => {
-      console.log(response.url)
-      this.url = response.url;
-    });
+    //todo: get url from backend for the google Oauth2 login
+
+    // this.backendHttpService.get("/auth/url").subscribe((response: any) => {
+    //   console.log(response.url)
+    //   this.url = response.url;
+    // });
 
 
     this.loginForm = this.builder.group({
