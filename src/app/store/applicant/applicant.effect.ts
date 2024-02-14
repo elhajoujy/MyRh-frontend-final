@@ -6,7 +6,7 @@ import {Router} from '@angular/router';
 
 import {JobSeekerService} from '../../job-seeker.service';
 import {
-  applicantLoginSuccess, applicantLogOut,
+  applicantLoginSuccess, applicantLogOut, applicantRefersh,
   applicantRegisterSuccess,
   applicantStartLogin,
   applicantStartRegister,
@@ -20,6 +20,25 @@ export class ApplicantEffect {
     private route: Router
   ) {
   }
+
+  getApplicant$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(applicantRefersh),
+      exhaustMap((action) => {
+        return this.jobSeekerService.auth(action.jobSeeker.email, action.jobSeeker.password).pipe(
+          map((data) => {
+            console.log('data :', data);
+            const jobSeeker = this.jobSeekerService.jobSeekerMapper(data);
+            console.log('jobSeeker :', jobSeeker);
+            return applicantLoginSuccess({
+              jobSeeker: jobSeeker,
+              isLogged: true,
+            });
+          })
+        );
+      })
+    )
+  );
 
   login$ = createEffect(() =>
     this.actions$.pipe(

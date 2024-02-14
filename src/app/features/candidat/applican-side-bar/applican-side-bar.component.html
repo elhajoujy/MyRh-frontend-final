@@ -94,7 +94,7 @@
           *ngIf="!applicant?.validated"
           class="min-w-max">
           <a
-            routerLink="/applicant/dashboard/quiz/{{applicant?.profile?.id}}"
+            [routerLink]="'/applicant/dashboard/quiz/'+applicant?.profile?.id"
             aria-label="quiz"
             class="group relative flex items-center space-x-4 p-1"
           >

@@ -10,7 +10,7 @@ export interface JobSeeker {
   enabled: boolean;
   validated: boolean;
   lastExamPassedDate: Date | null;
-  PassedExams: number;
+  passedExams: number;
   profile: Profile | any | null;
 }
 

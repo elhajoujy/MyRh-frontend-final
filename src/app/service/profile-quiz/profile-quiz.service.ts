@@ -19,8 +19,10 @@ export class ProfileQuizService {
 
 
   getQuizzesReleatedToProfile(profileId: number, params: Map<String, String>): Observable<PageQuestionResponse> {
-
-    const url = this.baseUrl + "/" + profileId + "/quizzes";
+    console.log("ProfileQuizService.getQuizzesReleatedToProfile");
+    console.log(params)
+    const page = params.get('page');
+    const url = this.baseUrl + "/" + profileId + "/quizzes?page=" + page + "&size=2";
     return this.http.get(url, {
       params: params as any
     }) as Observable<PageQuestionResponse>;

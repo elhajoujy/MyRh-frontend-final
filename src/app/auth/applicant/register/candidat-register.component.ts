@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../store/state/app.state';
-import { JobSeeker } from '../../../model/jobSeeker.model';
-import { applicantStartRegister } from '../../../store/applicant/applicant.action';
-import { profile } from '../../../model/profile.module';
+import {Component} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../../store/state/app.state';
+import {JobSeeker} from '../../../model/jobSeeker.model';
+import {applicantStartRegister} from '../../../store/applicant/applicant.action';
+import {profile} from '../../../model/profile.module';
 import {ProfileService} from '../../../service/profile/profile.service'
 
 @Component({
@@ -14,17 +14,17 @@ import {ProfileService} from '../../../service/profile/profile.service'
 })
 export class CandidatRegisterComponent {
   constructor(private builder: FormBuilder,
+              private store: Store<AppState>,
+              private profileService: ProfileService) {
+  }
 
-     private store: Store<AppState>,
-
-     private profileService: ProfileService) {}
   profiles: profile[] = [];
   signUpForm!: FormGroup;
   first_name_Error: any;
   last_name_Error: any;
   email_Error: any;
   password_Error: any;
-  profile_Error:any;
+  profile_Error: any;
   confirm_pass_Error: any;
 
   ngOnInit(): void {
@@ -69,12 +69,14 @@ export class CandidatRegisterComponent {
     });
     this.getAllProfiles();
   }
+
   getAllProfiles(): void {
     this.profileService.getAllProfiles()
       .subscribe(profiles => {
         this.profiles = profiles;
       });
   }
+
   onSubmit() {
     if (this.signUpForm.valid) {
       let jobSeeker: JobSeeker = {
@@ -87,12 +89,12 @@ export class CandidatRegisterComponent {
         enabled: true,
         validated: false,
         lastExamPassedDate: null,
-        PassedExams: 0,
+        passedExams: 0,
         profile: 0
       };
 
       if (this.signUpForm.value.confirmPassword === jobSeeker.password) {
-        this.store.dispatch(applicantStartRegister({ jobSeeker: jobSeeker }));
+        this.store.dispatch(applicantStartRegister({jobSeeker: jobSeeker}));
       } else {
         this.confirm_pass_Error = 'Mismatch Password';
       }

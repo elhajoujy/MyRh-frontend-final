@@ -9,7 +9,7 @@ import {JobSeeker, PageJobSeeker} from './model/jobSeeker.model';
   providedIn: 'root',
 })
 export class JobSeekerService {
-  private base_url = 'http://localhost:8080/myrh/api/v1/jobSeekers';
+  private base_url = `${environment.backendHost}/myrh/api/v1/jobSeekers`;
   private backend_host = environment.backendHost;
 
   constructor(private http: HttpClient) {
@@ -51,7 +51,7 @@ export class JobSeekerService {
       image: jobSeekerRes.image,
       enabled: jobSeekerRes.enabled,
       validated: jobSeekerRes.validated,
-      PassedExams: jobSeekerRes.PassedExams,
+      passedExams: jobSeekerRes.passedExams,
       profile: jobSeekerRes.profile,
       lastExamPassedDate: jobSeekerRes.lastExamPassedDate,
     };

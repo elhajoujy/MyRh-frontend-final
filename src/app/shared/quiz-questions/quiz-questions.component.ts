@@ -3,10 +3,11 @@ import {ProfileQuizService} from "../../service/profile-quiz/profile-quiz.servic
 import {PageQuestionResponse} from "../../model/profile-quiz-model";
 import {list} from "postcss";
 import {QuizJobSeekerService} from '../../service/jobSeeker/quiz-job-seeker/quiz-job-seeker.service';
-import {formatDate} from '@angular/common';
+import {DatePipe, formatDate} from '@angular/common';
 import {JobSeeker} from '../../model/jobSeeker.model';
 import {Store} from "@ngrx/store";
 import {AppState} from "../../store/state/app.state";
+import {applicantRefersh} from "../../store/applicant/applicant.action";
 
 @Component({
   selector: 'quiz-questions',
@@ -22,14 +23,16 @@ export class QuizQuestionsComponent implements OnInit {
   score: number = 0;
   showResult!: boolean;
   validated!: boolean;
-  JobSeekerLogged!: JobSeeker;
+  JobSeekerLogged!: JobSeeker | null;
   applicant!: JobSeeker | null;
   isLogged!: boolean | null;
+  message: string = 'No questions found.';
 
   constructor(
     private ProfileQuizService: ProfileQuizService,
     private quizJobSeekerService: QuizJobSeekerService,
-    private store: Store<AppState>
+    private store: Store<AppState>,
+    private datePipe: DatePipe
   ) {
   }
 
@@ -39,17 +42,28 @@ export class QuizQuestionsComponent implements OnInit {
       .subscribe(
         (state) => (
           (this.applicant = state.applicant),
+            (this.JobSeekerLogged = state.applicant),
             (this.isLogged = state.isLogged),
             console.log('Applicant : ', state.applicant)
 
         )
       );
-    this.loadQuestions();
+
+    if (this.applicant) {
+      if (this.applicant?.passedExams >= 3 && this.datePipe.transform(this.applicant?.lastExamPassedDate, 'MM') == this.datePipe.transform(new Date(), 'MM')) {
+        console.log("You have already attempted 3 exams this month.");
+        this.message = "You have already attempted 3 exams this month.";
+        return;
+      }
+      this.loadQuestions();
+    }
 
   }
 
   loadQuestions(): void {
-    this.ProfileQuizService.getQuizzesReleatedToProfile(1, new Map()).subscribe(
+    let parms = new Map();
+    parms.set('page', this.applicant?.passedExams);
+    this.ProfileQuizService.getQuizzesReleatedToProfile(this.applicant?.profile.id, parms).subscribe(
       (data) => {
         this.listOfQuestions = data;
         console.log(this.listOfQuestions);
@@ -88,14 +102,18 @@ export class QuizQuestionsComponent implements OnInit {
     const formattedDate = this.formatDateToString(currentDate);
 
     const percentageofsucces: number = (this.score / this.listOfQuestions.content.length) * 100;
+    console.log(percentageofsucces)
 
-    if (this.score >= 70) {
+
+    if (percentageofsucces >= 70) {
       this.showResult = true;
       this.validated = true;
+      //TODO:REFERSH DATA FROM DATABASE
     } else {
       this.showResult = false;
-      this.validated = true;
+      this.validated = false;
     }
+
 
     this.quizJobSeekerService.sendQuizResult(jobseekerlogged, formattedDate, this.validated)
       .subscribe(
@@ -107,21 +125,36 @@ export class QuizQuestionsComponent implements OnInit {
           // Handle error if needed
         }
       );
+    if (this.isLogged) {
+      this.isLogged = true;
+    } else {
+      this.isLogged = false;
+    }
+
+    this.store.dispatch(applicantRefersh({jobSeeker: this.applicant, isLogged: this.isLogged}));
+
   }
 
 
   restartQuiz() {
 
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth();
+    if (!this.JobSeekerLogged) {
+      //todo: redirect to login page
+      console.log("You are not logged in");
+      return;
+    }
+    this.showResult = false;
+    let currentDate = new Date();
+    const currentMonth = this.datePipe.transform(currentDate, 'MM');
+    const attemptDate = this.datePipe.transform(this.JobSeekerLogged?.lastExamPassedDate, 'MM');
+    console.log(attemptDate)
 
-    //const attemptDate = this.JobSeekerLogged.lastExamPassedDate.getMonth() ;
-    const attemptDate = 3
-    if (this.JobSeekerLogged.PassedExams == 3 && attemptDate == currentMonth) {
+    if (this.JobSeekerLogged?.passedExams >= 3 && attemptDate == currentMonth) {
       console.log("You have already attempted 3 exams this month.");
+      return;
 
     }
-    if (this.JobSeekerLogged.PassedExams == 3 && attemptDate != currentMonth) {
+    if (this.JobSeekerLogged?.passedExams == 3 && attemptDate != currentMonth) {
       this.quizJobSeekerService.countAttemptsToZero(this.JobSeekerLogged.id);
       console.log("You can restart the quiz");
       this.loadQuestions();
