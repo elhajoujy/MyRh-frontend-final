@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../../store/state/app.state';
 import {JobSeeker} from '../../../model/jobSeeker.model';
-import {applicantLogOut} from "../../../store/applicant/applicant.action";
+import {applicantLogOut, applicantRefersh} from "../../../store/applicant/applicant.action";
 import {Router} from "@angular/router";
 
 @Component({
@@ -21,6 +21,7 @@ export class ApplicanSideBarComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    console.log('Applicant Side Bar :')
 
     this.store.select('applicantAuth').subscribe(
       (state) => (
@@ -35,7 +36,9 @@ export class ApplicanSideBarComponent implements OnInit {
           )
       )
     );
-    console.log(this.applicant);
+    if (this.applicant && this.isLogged) {
+      this.store.dispatch(applicantRefersh({jobSeeker: this.applicant, isLogged: this.isLogged}));
+    }
   }
 
   logout() {
