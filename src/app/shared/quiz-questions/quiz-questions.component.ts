@@ -1,13 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 import {ProfileQuizService} from "../../service/profile-quiz/profile-quiz.service";
 import {PageQuestionResponse} from "../../model/profile-quiz-model";
-import {list} from "postcss";
 import {QuizJobSeekerService} from '../../service/jobSeeker/quiz-job-seeker/quiz-job-seeker.service';
 import {DatePipe, formatDate} from '@angular/common';
 import {JobSeeker} from '../../model/jobSeeker.model';
 import {Store} from "@ngrx/store";
 import {AppState} from "../../store/state/app.state";
 import {applicantRefersh} from "../../store/applicant/applicant.action";
+import swal from "sweetalert2";
+
 
 @Component({
   selector: 'quiz-questions',
@@ -108,7 +109,13 @@ export class QuizQuestionsComponent implements OnInit {
     if (percentageofsucces >= 70) {
       this.showResult = true;
       this.validated = true;
-      //TODO:REFERSH DATA FROM DATABASE
+
+      //:show popup message with the user information and the result
+      swal.fire({
+        title: `Good job! You passed the quiz! ${percentageofsucces}% of success ${this.applicant?.first_name} ${this.applicant?.last_name}!`,
+        text: "Thank you for taking the quiz. You can now apply for the job.",
+        icon: "success"
+      });
     } else {
       this.showResult = false;
       this.validated = false;
