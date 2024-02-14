@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ProfileQuizService} from "../../service/profile-quiz/profile-quiz.service";
 import {PageQuestionResponse} from "../../model/profile-quiz-model";
-import {list} from "postcss";
 import {QuizJobSeekerService} from '../../service/jobSeeker/quiz-job-seeker/quiz-job-seeker.service';
 import {DatePipe, formatDate} from '@angular/common';
 import {JobSeeker} from '../../model/jobSeeker.model';
