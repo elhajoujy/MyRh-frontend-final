@@ -1,4 +1,4 @@
-import { Injectable, OnInit } from '@angular/core';
+import {Injectable, OnInit} from '@angular/core';
 import {
   ActivatedRouteSnapshot,
   CanActivate,
@@ -6,16 +6,19 @@ import {
   RouterStateSnapshot,
   UrlTree,
 } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
-import { AppState } from '../store/state/app.state';
+import {Store} from '@ngrx/store';
+import {Observable} from 'rxjs';
+import {AppState} from '../store/state/app.state';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthGuard implements CanActivate, OnInit {
   isLoggedIn!: boolean | null;
-  constructor(private router: Router, private store: Store<AppState>) {}
+
+  constructor(private router: Router, private store: Store<AppState>) {
+  }
+
   ngOnInit(): void {
     this.store
       .select('companyAuth')

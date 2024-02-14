@@ -1,15 +1,19 @@
-import { Injectable } from '@angular/core';
-import { ResponseHttp } from '../model/responseData.model';
-import { Admin } from '../model/admin.model';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Injectable} from '@angular/core';
+import {ResponseHttp} from '../model/responseData.model';
+import {Admin} from '../model/admin.model';
+import {HttpClient} from '@angular/common/http';
+import {Observable} from 'rxjs';
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminService {
-  private base_url = 'http://localhost:8080/myrh/api/v1/admin';
-  constructor(private http: HttpClient) {}
+  // http://localhost:8080
+  private base_url = `${environment.backendHost}/myrh/api/v1/admin`;
+
+  constructor(private http: HttpClient) {
+  }
 
   public auth(email: string, password: string): Observable<ResponseHttp> {
     return this.http.post<ResponseHttp>(this.base_url + '/auth', {

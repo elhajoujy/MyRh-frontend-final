@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import {environment} from "../../../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ import { Injectable } from '@angular/core';
 export class QuizJobSeekerService {
 
   constructor(private http: HttpClient) { }
-   endpoint= "http://localhost:8080/myrh/api/v1/jobSeekers"
+   endpoint= `${environment.backendHost}/myrh/api/v1/jobSeekers`
 
   sendQuizResult(jobseekerId: number, currentDate: String, validated: boolean) {
 

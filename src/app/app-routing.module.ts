@@ -51,10 +51,7 @@ const routes: Routes = [
           },
         ],
       },
-      {
-        path: "quiz/:id",
-        component: QuizComponent
-      },
+
 
       {
         path: 'dashboard',
@@ -66,7 +63,10 @@ const routes: Routes = [
 
         children: [
           // {path: '', redirectTo: 'jobApplicants', pathMatch: 'full'},
-
+          {
+            path: "quiz/:id",
+            component: QuizComponent
+          },
           {
             path: 'jobApplicants',
             component: MyApplicantsComponent,

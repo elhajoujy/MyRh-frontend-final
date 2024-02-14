@@ -30,7 +30,7 @@ import {AccountValidationComponent} from './auth/account-validation/account-vali
 import {CandidatRegisterComponent} from './auth/applicant/register/candidat-register.component';
 import {AdminDashboardComponent} from './features/admin/dashboard/admin-dashboard.component';
 import {AdminOfferListComponent} from './shared/admin/admin-offer-list/admin-offer-list.component';
-import {CommonModule} from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {JobSeekerLoginComponent} from './auth/applicant/login/login.component';
 import {CompanyDashboardComponent} from './features/company/dashboard/company-dashboard.component';
 import {CandidatesInsightsComponent} from './features/company/candidats-insights/candidates-insights.component';
@@ -58,9 +58,9 @@ import {MyApplicantsComponent} from './features/candidat/my-applicants/my-applic
 import {AuthAdminGuard} from './core/guards/admin/auth-admin.guard';
 import {AuthCompanyGuard} from './core/guards/company/auth-company-guard.guard';
 import {QuizComponent} from "./features/candidat/quiz/quiz.component";
-import { QuizQuestionsComponent } from './shared/quiz-questions/quiz-questions.component';
-import { QuestionComponent } from './shared/question/question.component';
-import { AnswerComponent } from './shared/answer/answer.component';
+import {QuizQuestionsComponent} from './shared/quiz-questions/quiz-questions.component';
+import {QuestionComponent} from './shared/question/question.component';
+import {AnswerComponent} from './shared/answer/answer.component';
 
 
 const MODULES = [
@@ -146,6 +146,7 @@ const ADMIN_COMPONENT = [
     AuthCompanyGuard,
     JobSeekerApplicationSocketConfigService,
     ToastService,
+    DatePipe
   ],
 
   bootstrap: [AppComponent],

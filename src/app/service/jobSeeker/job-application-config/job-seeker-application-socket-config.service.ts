@@ -16,7 +16,8 @@ export class JobSeekerApplicationSocketConfigService {
 
 
   private stompClient = Stomp.over(function () {
-    return new SockJS('http://localhost:8080/myrh-websocket');
+    // http://localhost:8080/myrh-websocket
+    return new SockJS(`${environment.backendHost}/myrh-websocket`);
   });
 
 

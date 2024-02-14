@@ -9,8 +9,8 @@ import {BackendHttpService} from "./backend-http/backend-http.service";
   providedIn: 'root',
 })
 export class OfferService {
-  private base_url = 'http://localhost:8080/myrh/api/v1/offers';
   private backend_host = environment.backendHost;
+  private base_url = `${environment.backendHost}/myrh/api/v1/offers`;
 
   constructor(
     private http: HttpClient,

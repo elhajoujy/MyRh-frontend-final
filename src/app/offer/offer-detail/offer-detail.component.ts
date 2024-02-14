@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
-import { JobApplicantService } from '../../service/job-applicant.service';
+import {Component, OnInit} from '@angular/core';
+import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {ActivatedRoute} from '@angular/router';
+import {Observable} from 'rxjs';
+import {JobApplicantService} from '../../service/job-applicant.service';
 import {
   JobApplicant,
   JobApplicantRequsest,
 } from '../../model/jobApplicant.model';
-import { Offer } from '../../model/offer.model';
-import { OfferService } from '../../service/offer.service';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../store/state/app.state';
+import {Offer} from '../../model/offer.model';
+import {OfferService} from '../../service/offer.service';
+import {Store} from '@ngrx/store';
+import {AppState} from '../../store/state/app.state';
 
 @Component({
   selector: 'app-offer-detail',
@@ -34,7 +34,9 @@ export class OfferDetailComponent implements OnInit {
     private jobApplicantService: JobApplicantService,
     private builder: FormBuilder,
     private _store: Store<AppState>
-  ) {}
+  ) {
+  }
+
   ngOnInit(): void {
     this._store.select('adminAuth').subscribe((state) => {
       this.isAdmin = state.isLogged;
@@ -80,6 +82,7 @@ export class OfferDetailComponent implements OnInit {
     console.log(this.jobApplicantForm.value.resume);
     console.log(typeof this.jobApplicantForm.value.resume);
   }
+
   OnApply(offer: Offer): void {
     let jobApplicant: JobApplicantRequsest = {
       JobApplicantId: {
@@ -95,7 +98,7 @@ export class OfferDetailComponent implements OnInit {
         enabled: false,
         image: '',
         validated: false,
-        PassedExams: 0,
+        passedExams: 0,
         profile: 0,
         lastExamPassedDate: null
       },

@@ -10,4 +10,4 @@ RUN echo "Build completed"
 #COPY --from=builder /app/dist/comp-lib /usr/share/nginx/html
 
 #docker build -t elhjoujy/angular-app .
-#docker run -d -it -p 80:80/tcp --name angular-app elhjoujy/angular-app:latest
+#docker run -d -it -p 4200:4200/tcp --name angular-app elhjoujy/angular-app:latest
