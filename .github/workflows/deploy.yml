@@ -1,0 +1,9 @@
+name: Deploy the frontend to S3 using github actions
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
