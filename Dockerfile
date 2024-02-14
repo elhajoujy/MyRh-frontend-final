@@ -1,13 +1,19 @@
-# Stage 1
-FROM node:18.10 as node
-WORKDIR /app
-COPY . .
+FROM node:alpine
+
+WORKDIR /usr/src/app
+
+COPY . /usr/src/app
+
+RUN npm install -g @angular/cli
+
 RUN npm install
-RUN npm run build
-RUN echo "Build completed"
+
+CMD ["ng", "serve", "--host", "0.0.0.0"]
 # Stage 2
 #FROM nginx:alpine
 #COPY --from=builder /app/dist/comp-lib /usr/share/nginx/html
 
-#docker build -t elhjoujy/angular-app .
-#docker run -d -it -p 4200:4200/tcp --name angular-app elhjoujy/angular-app:latest
+
+#https://dev.to/rodrigokamada/creating-and-running-an-angular-application-in-a-docker-container-40mk
+#1- #docker build -t angular-docker .
+#2- #docker run -p 4200:4200 angular-docker
