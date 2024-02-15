@@ -23,8 +23,8 @@ jobs:
     needs: build
     runs-on: [
       aws-ec2,
-      self-hosted,
-      aws-ec2-front-end
+#      self-hosted,
+#      aws-ec2-front-end
 
     ]
     steps:
