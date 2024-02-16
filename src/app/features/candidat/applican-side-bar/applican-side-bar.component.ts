@@ -47,4 +47,11 @@ export class ApplicanSideBarComponent implements OnInit {
       window.location.reload();
     });
   }
+
+  takeQuizEvent() {
+    //get the current date from store and compare it with the last exam date
+    if (this.applicant && this.isLogged) {
+      this.store.dispatch(applicantRefersh({jobSeeker: this.applicant, isLogged: this.isLogged}));
+    }
+  }
 }

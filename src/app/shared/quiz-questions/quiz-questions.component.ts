@@ -92,6 +92,12 @@ export class QuizQuestionsComponent implements OnInit {
 
   showFinalQuizResult() {
     //:get jobsekeer from  the token
+    if (this.isLogged) {
+      this.isLogged = true;
+    } else {
+      this.isLogged = false;
+    }
+
     let jobseekerlogged = 0;
     if (this.applicant) {
       jobseekerlogged = this.applicant.id;
@@ -109,6 +115,7 @@ export class QuizQuestionsComponent implements OnInit {
     if (percentageofsucces >= 70) {
       this.showResult = true;
       this.validated = true;
+      this.store.dispatch(applicantRefersh({jobSeeker: this.applicant, isLogged: this.isLogged}));
 
       //:show popup message with the user information and the result
       swal.fire({
@@ -126,24 +133,23 @@ export class QuizQuestionsComponent implements OnInit {
       .subscribe(
         (response) => {
           console.log("Quiz result sent to backend successfully", response);
+          this.store.dispatch(applicantRefersh({jobSeeker: response as JobSeeker, isLogged: true}));
         },
         (error) => {
           console.error("Error sending quiz result to backend", error);
           // Handle error if needed
         }
       );
-    if (this.isLogged) {
-      this.isLogged = true;
-    } else {
-      this.isLogged = false;
-    }
+
 
     this.store.dispatch(applicantRefersh({jobSeeker: this.applicant, isLogged: this.isLogged}));
+    console.log("refershing the store")
 
   }
 
 
   restartQuiz() {
+
 
     if (!this.JobSeekerLogged) {
       //todo: redirect to login page
